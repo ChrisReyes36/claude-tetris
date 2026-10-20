@@ -43,6 +43,14 @@
   --ghost-alpha: 0.35;
 }
 
+/* Skin Neon: canvas negro en ambos temas (el canvas lee estas variables) */
+[data-skin="neon"] {
+  --canvas-bg: #000000;
+  --grid: #1c1c2b;
+  --block-highlight: rgba(255, 255, 255, 0.12);
+  --ghost-alpha: 0.35;
+}
+
 *, *::before, *::after {
   box-sizing: border-box;
   margin: 0;
@@ -215,10 +223,16 @@ kbd {
 }
 
 /* ---- Toggle de tema ---- */
-#theme-toggle {
+.top-controls {
   position: fixed;
   top: 16px;
   right: 16px;
+  display: flex;
+  gap: 8px;
+}
+
+#skin-select,
+#theme-toggle {
   background: var(--canvas-bg);
   color: var(--text);
   border: 1px solid var(--border);
@@ -230,6 +244,7 @@ kbd {
   transition: background 0.2s, border-color 0.2s;
 }
 
+#skin-select:hover,
 #theme-toggle:hover {
   border-color: var(--accent);
 }
