@@ -35,6 +35,7 @@ Es una versión jugable del Tetris clásico con todas las mecánicas que esperar
 
 - Tablero de **10 × 20** celdas.
 - Las **7 piezas estándar** (I, O, T, S, Z, J, L) con colores diferenciados, más una pieza especial: la **tuerca** (3×3 con hueco central; su fila central no se puede completar).
+- Un ítem especial, la **bomba**: aparece al azar (~10 % de las piezas) y al aterrizar destruye un área de 3×3 (10 × nivel puntos por bloque destruido).
 - **Rotación** con _wall kicks_ básicos (pequeños desplazamientos para que la pieza pueda rotar pegada a la pared).
 - **Soft drop** (bajada acelerada) y **hard drop** (caída instantánea).
 - **Pieza fantasma** (_ghost piece_): muestra dónde aterrizará la pieza actual.

@@ -14,6 +14,7 @@ const COLORS = [
   '#90caf9', // J - light blue
   '#ffb74d', // L - orange
   '#b0bec5', // N - tuerca (gris metálico)
+  '#424242', // bomba
 ];
 
 // Paleta más saturada para fondo claro (mismos índices que COLORS)
@@ -27,6 +28,7 @@ const COLORS_LIGHT = [
   '#1e88e5', // J
   '#fb8c00', // L
   '#607d8b', // N
+  '#212121', // bomba
 ];
 
 const THEME_KEY = 'tetris-theme';
@@ -41,9 +43,16 @@ const PIECES = [
   [[6,0,0],[6,6,6],[0,0,0]],                  // J
   [[0,0,7],[7,7,7],[0,0,0]],                  // L
   [[8,8,8],[8,0,8],[8,8,8]],                  // N - tuerca (hueco central)
+  [[9]],                                       // bomba (ítem especial, siempre el último índice)
 ];
 
 const LINE_SCORES = [0, 100, 300, 500, 800];
+
+const BOMB = 9;
+const BOMB_CHANCE = 0.1;
+const BOMB_POINTS = 10;
+const EXPLOSION_MS = 400;
+const SPARK_COUNT = 12;
 
 const canvas = document.getElementById('board');
 const ctx = canvas.getContext('2d');
@@ -61,14 +70,14 @@ const themeBtn = document.getElementById('theme-toggle');
 let theme = 'dark';
 let gridColor, highlightColor, ghostAlpha, palette = COLORS;
 
-let board, current, next, score, lines, level, paused, gameOver, lastTime, dropAccum, dropInterval, animId;
+let board, current, next, score, lines, level, paused, gameOver, lastTime, dropAccum, dropInterval, animId, explosions;
 
 function createBoard() {
   return Array.from({ length: ROWS }, () => new Array(COLS).fill(0));
 }
 
 function randomPiece() {
-  const type = Math.floor(Math.random() * (PIECES.length - 1)) + 1;
+  const type = Math.random() < BOMB_CHANCE ? BOMB : Math.floor(Math.random() * (BOMB - 1)) + 1;
   const shape = PIECES[type].map(row => [...row]);
   return { type, shape, x: Math.floor(COLS / 2) - Math.floor(shape[0].length / 2), y: 0 };
 }
@@ -114,6 +123,31 @@ function merge() {
         board[current.y + r][current.x + c] = current.shape[r][c];
 }
 
+// La bomba no se fusiona con el tablero: borra el área 3×3 alrededor de donde aterriza
+function explode() {
+  let destroyed = 0;
+  for (let r = current.y - 1; r <= current.y + 1; r++) {
+    for (let c = current.x - 1; c <= current.x + 1; c++) {
+      if (r < 0 || r >= ROWS || c < 0 || c >= COLS) continue;
+      if (board[r][c]) {
+        board[r][c] = 0;
+        destroyed++;
+      }
+    }
+  }
+  score += destroyed * BOMB_POINTS * level;
+  updateHUD();
+  explosions.push({ x: current.x, y: current.y, start: performance.now(), sparks: makeSparks() });
+}
+
+// Se generan una sola vez por explosión para que no parpadeen entre frames
+function makeSparks() {
+  return Array.from({ length: SPARK_COUNT }, () => ({
+    angle: Math.random() * Math.PI * 2,
+    speed: 0.8 + Math.random() * 1.2,
+  }));
+}
+
 function clearLines() {
   let cleared = 0;
   for (let r = ROWS - 1; r >= 0; r--) {
@@ -157,7 +191,8 @@ function softDrop() {
 }
 
 function lockPiece() {
-  merge();
+  if (current.type === BOMB) explode();
+  else merge();
   clearLines();
   spawn();
 }
@@ -182,6 +217,23 @@ function drawBlock(context, x, y, colorIndex, size, alpha) {
   const color = palette[colorIndex];
   context.globalAlpha = alpha ?? 1;
   context.fillStyle = color;
+  if (colorIndex === BOMB) {
+    const cx = x * size + size / 2;
+    const cy = y * size + size / 2 + 2;
+    const rad = size / 2 - 4;
+    context.beginPath();
+    context.arc(cx, cy, rad, 0, Math.PI * 2);
+    context.fill();
+    // mecha
+    context.strokeStyle = '#ff7043';
+    context.lineWidth = 2;
+    context.beginPath();
+    context.moveTo(cx, cy - rad);
+    context.lineTo(cx + 4, cy - rad - 4);
+    context.stroke();
+    context.globalAlpha = 1;
+    return;
+  }
   context.fillRect(x * size + 1, y * size + 1, size - 2, size - 2);
   // highlight
   context.fillStyle = highlightColor;
@@ -226,6 +278,38 @@ function draw() {
   for (let r = 0; r < current.shape.length; r++)
     for (let c = 0; c < current.shape[r].length; c++)
       drawBlock(ctx, current.x + c, current.y + r, current.shape[r][c], BLOCK);
+
+  drawExplosions();
+}
+
+function drawExplosions() {
+  const now = performance.now();
+  explosions = explosions.filter(e => now - e.start < EXPLOSION_MS);
+  for (const e of explosions) {
+    const t = (now - e.start) / EXPLOSION_MS;
+    const cx = (e.x + 0.5) * BLOCK;
+    const cy = (e.y + 0.5) * BLOCK;
+    const radius = BLOCK * 1.5 * (1 - (1 - t) * (1 - t));
+    ctx.globalAlpha = 1 - t;
+
+    // destello
+    const grad = ctx.createRadialGradient(cx, cy, 0, cx, cy, radius);
+    grad.addColorStop(0, '#ffffff');
+    grad.addColorStop(0.4, '#ff7043');
+    grad.addColorStop(1, 'rgba(255, 112, 67, 0)');
+    ctx.fillStyle = grad;
+    ctx.beginPath();
+    ctx.arc(cx, cy, radius, 0, Math.PI * 2);
+    ctx.fill();
+
+    // chispas
+    ctx.fillStyle = '#ffca28';
+    for (const s of e.sparks) {
+      const dist = s.speed * t * BLOCK * 2;
+      ctx.fillRect(cx + Math.cos(s.angle) * dist - 1.5, cy + Math.sin(s.angle) * dist - 1.5, 3, 3);
+    }
+  }
+  ctx.globalAlpha = 1;
 }
 
 function drawNext() {
@@ -305,6 +389,7 @@ function init() {
   level = 1;
   paused = false;
   gameOver = false;
+  explosions = [];
   dropInterval = 1000;
   dropAccum = 0;
   lastTime = performance.now();
