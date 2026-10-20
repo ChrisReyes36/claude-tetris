@@ -10,7 +10,7 @@ Tetris en JavaScript vanilla + HTML5 Canvas (README y UI en español). No hay bu
 
 Todo el juego vive en un único script con estado global a nivel de módulo (`board`, `current`, `next`, `score`, `lines`, `level`, `paused`, `gameOver`, `dropInterval`, etc.), declarado en una sola línea y asignado en `init()`.
 
-- **Tablero**: matriz `ROWS × COLS` (20×10) de enteros. `0` = vacío; `1–7` = índice de pieza, usado tanto en `PIECES` (matrices de forma) como en `COLORS` (mismo índice). Al añadir una pieza hay que actualizar ambos arrays.
+- **Tablero**: matriz `ROWS × COLS` (20×10) de enteros. `0` = vacío; `1–8` = índice de pieza, usado tanto en `PIECES` (matrices de forma) como en `COLORS` (mismo índice). Al añadir una pieza hay que actualizar `PIECES`, `COLORS` y `COLORS_LIGHT`. La pieza 8 es la tuerca (3×3 con hueco central real: su fila central no se puede limpiar).
 - **Pieza**: objeto `{ type, shape, x, y }`; `shape` es una matriz cuyos valores no cero son el índice de color. La rotación (`rotateCW`) genera una matriz nueva; `tryRotate` aplica *wall kicks* horizontales `[0, -1, 1, -2, 2]`.
 - **Bucle**: `loop(ts)` (requestAnimationFrame) acumula `dropAccum` y baja la pieza cuando supera `dropInterval`; `dropInterval = max(100, 1000 - (level-1)*90)`, recalculado en `clearLines`. Pausa y game over cancelan el frame con `cancelAnimationFrame(animId)`; `init()` reinicia todo el estado (también lo usa el botón Reiniciar).
 - **Ciclo de pieza**: `lockPiece()` = `merge()` → `clearLines()` → `spawn()`. `spawn()` promueve `next`, genera una nueva y llama a `endGame()` si la nueva pieza colisiona al aparecer.
