@@ -7,7 +7,9 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <button id="theme-toggle" type="button" aria-pressed="false" aria-label="Cambiar a modo claro">☀ Claro</button>
+  <div class="top-controls">
+    <button id="theme-toggle" type="button" aria-pressed="false" aria-label="Cambiar a modo claro">☀ Claro</button>
+  </div>
 
   <div class="wrapper">
     <h1 class="title">TETRIS</h1>
@@ -92,6 +94,16 @@
         <div class="panel-section">
           <span class="label">NEXT</span>
           <canvas id="next-canvas" width="120" height="120"></canvas>
+        </div>
+
+        <div class="panel-section">
+          <span class="label">SKIN</span>
+          <div class="skin-grid" role="group" aria-label="Skin">
+            <button type="button" class="skin-btn" data-skin="retro" aria-pressed="true"><canvas width="36" height="36"></canvas><span>Retro</span></button>
+            <button type="button" class="skin-btn" data-skin="neon" aria-pressed="false"><canvas width="36" height="36"></canvas><span>Neon</span></button>
+            <button type="button" class="skin-btn" data-skin="pastel" aria-pressed="false"><canvas width="36" height="36"></canvas><span>Pastel</span></button>
+            <button type="button" class="skin-btn" data-skin="pixel" aria-pressed="false"><canvas width="36" height="36"></canvas><span>Pixel</span></button>
+          </div>
         </div>
 
         <div class="panel-section controls">

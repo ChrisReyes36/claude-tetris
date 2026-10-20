@@ -509,11 +509,70 @@ kbd {
   color: var(--danger);
 }
 
-/* ---- Toggle de tema ---- */
-#theme-toggle {
+/* ---- Controles superiores: skin + tema ---- */
+.top-controls {
   position: fixed;
   top: 16px;
   right: 16px;
+  display: flex;
+  gap: 8px;
+}
+
+/* ---- Selector de skin (panel lateral) ---- */
+.skin-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.skin-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 4px;
+  background: var(--kbd-bg);
+  color: var(--muted);
+  border: 1px solid var(--kbd-border);
+  border-radius: 8px;
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: border-color 0.15s, color 0.15s, box-shadow 0.15s;
+}
+
+.skin-btn canvas {
+  display: block;
+  border-radius: 4px;
+  background: var(--canvas-bg);
+}
+
+.skin-btn[data-skin="neon"] canvas {
+  background: #000;
+}
+
+.skin-btn:hover {
+  border-color: var(--accent);
+  color: var(--text);
+}
+
+.skin-btn[aria-pressed="true"] {
+  border-color: var(--accent);
+  color: var(--accent);
+  box-shadow: 0 0 0 1px var(--accent), 0 0 10px var(--accent-glow);
+}
+
+/* Neón fuerza fondo negro en ambos temas (más específico que [data-theme="light"]) */
+:root[data-skin="neon"] {
+  --canvas-bg: #000000;
+  --grid: #111122;
+  --block-highlight: rgba(255, 255, 255, 0.15);
+  --ghost-alpha: 0.25;
+  --board-shadow: rgba(0, 240, 255, 0.35);
+}
+
+/* ---- Toggle de tema ---- */
+#theme-toggle {
   background: var(--canvas-bg);
   color: var(--text);
   border: 1px solid var(--border);
