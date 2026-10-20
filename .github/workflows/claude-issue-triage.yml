@@ -43,7 +43,11 @@ jobs:
             3. Asigna los labels apropiados con `gh issue edit ${{ github.event.issue.number }} --add-label "a,b"`.
                Si el evento es una edición y algún label asignado antes ya no corresponde, quítalo con `--remove-label`.
             4. Lee `CLAUDE.md` y el código relevante (`game.js`, `index.html`, `style.css`) para fundamentar el diagnóstico.
-            5. Escribe el diagnóstico, en español, en el archivo `triage-comment.md` (raíz del workspace) con esta estructura:
+            5. Escribe el diagnóstico, en español, en el archivo `triage-comment.md` (raíz del workspace).
+               El contenido se publicará como comentario en GitHub, así que debe estar en formato Markdown
+               compatible con GitHub (GFM): encabezados `###`, listas con `-` o numeradas, `código` en línea,
+               bloques de código con triple backtick y lenguaje (```js), tablas y listas de tareas (`- [ ]`) si aplican.
+               Con esta estructura:
                ### Resumen
                ### Clasificación (labels elegidos y justificación breve)
                ### Área afectada (archivos y funciones concretas, p. ej. `collide`, `tryRotate`, `clearLines`, `draw`)
