@@ -14,7 +14,42 @@
 
     <div class="stage">
     <div class="game-container">
+      <aside id="records" class="records-panel" aria-label="Tabla de records">
+        <h2 class="records-title"><span aria-hidden="true">🏆</span> RÉCORDS</h2>
+        <ol id="records-list"></ol>
+        <div class="records-stats">
+          <div class="stat">
+            <span class="label">MEJOR COMBO</span>
+            <span class="stat-value" id="best-combo">0</span>
+          </div>
+          <div class="stat">
+            <span class="label">LÍNEAS MÁX.</span>
+            <span class="stat-value" id="best-lines">0</span>
+          </div>
+        </div>
+        <button id="reset-records" type="button">Borrar records</button>
+      </aside>
+
+      <div class="board-wrap">
       <canvas id="board" width="300" height="600"></canvas>
+
+      <div id="overlay" class="overlay hidden">
+        <div class="overlay-box">
+          <p id="overlay-title">GAME OVER</p>
+          <p id="overlay-score"></p>
+
+          <form id="name-form" class="hidden" autocomplete="off">
+            <p id="name-form-msg"></p>
+            <div class="name-row">
+              <input id="player-name" type="text" maxlength="12" placeholder="Tu nombre" aria-label="Nombre del jugador" />
+              <button id="save-name-btn" type="submit">Guardar</button>
+            </div>
+          </form>
+
+          <button id="restart-btn">Jugar</button>
+        </div>
+      </div>
+      </div>
 
       <aside class="panel">
         <div class="panel-section">
@@ -46,14 +81,6 @@
           </ul>
         </div>
       </aside>
-    </div>
-
-    <div id="overlay" class="overlay hidden">
-      <div class="overlay-box">
-        <p id="overlay-title">GAME OVER</p>
-        <p id="overlay-score"></p>
-        <button id="restart-btn">Reiniciar</button>
-      </div>
     </div>
     </div>
   </div>

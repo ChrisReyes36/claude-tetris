@@ -214,6 +214,217 @@ kbd {
   background: var(--accent-hover);
 }
 
+/* ---- Records ---- */
+.hidden {
+  display: none !important;
+}
+
+#overlay-score {
+  max-width: 260px;
+}
+
+#name-form {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: center;
+}
+
+#name-form-msg {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--accent);
+}
+
+.name-row {
+  display: flex;
+  gap: 6px;
+}
+
+#player-name {
+  width: 130px;
+  background: var(--canvas-bg);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 6px 10px;
+  font-size: 13px;
+  user-select: text;
+}
+
+#player-name:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+#save-name-btn {
+  background: var(--accent);
+  color: var(--on-accent);
+  border: none;
+  border-radius: 6px;
+  padding: 6px 12px;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+#save-name-btn:hover {
+  background: var(--accent-hover);
+}
+
+/* Panel de records a la izquierda del tablero */
+.board-wrap {
+  position: relative; /* el overlay solo cubre el tablero */
+}
+
+.records-panel {
+  width: 200px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 16px 14px;
+  background: var(--canvas-bg);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  box-shadow: 0 0 40px var(--board-shadow);
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.records-title {
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 3px;
+  text-align: center;
+  color: var(--accent);
+  text-shadow: 0 0 12px var(--accent-glow);
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border);
+}
+
+#records-list {
+  list-style: none;
+  counter-reset: rank;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+#records-list li {
+  counter-increment: rank;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 8px;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  font-size: 13px;
+  color: var(--muted);
+  transition: background 0.2s;
+}
+
+/* Insignia con el puesto; oro, plata y bronce para el podio */
+#records-list li::before {
+  content: counter(rank);
+  flex: none;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-size: 11px;
+  font-weight: 800;
+  background: var(--kbd-bg);
+  color: var(--kbd-text);
+}
+
+#records-list li:nth-child(1)::before { background: #fbc02d; color: #3e2f00; }
+#records-list li:nth-child(2)::before { background: #cfd8dc; color: #263238; }
+#records-list li:nth-child(3)::before { background: #d08a4e; color: #3b2108; }
+
+#records-list li span:first-of-type {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-weight: 600;
+  color: var(--text);
+}
+
+#records-list li span:last-of-type {
+  font-family: 'Courier New', Courier, monospace;
+  font-weight: 700;
+  color: var(--accent);
+}
+
+/* Puestos libres */
+#records-list li.empty span:first-of-type {
+  color: var(--label);
+  font-weight: 400;
+}
+
+#records-list li.empty::before {
+  opacity: 0.5;
+}
+
+#records-list li.highlight {
+  background: var(--accent-glow);
+  border-color: var(--accent);
+  box-shadow: 0 0 14px var(--accent-glow);
+}
+
+.records-stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  padding-top: 12px;
+  border-top: 1px solid var(--border);
+}
+
+.stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 8px 4px;
+  background: var(--kbd-bg);
+  border-radius: 8px;
+}
+
+.stat .label {
+  font-size: 8px;
+  letter-spacing: 1px;
+  text-align: center;
+}
+
+.stat-value {
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--accent);
+}
+
+#reset-records {
+  align-self: center;
+  background: none;
+  color: var(--muted);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 5px 12px;
+  font-size: 11px;
+  cursor: pointer;
+  transition: color 0.15s, border-color 0.15s;
+}
+
+#reset-records:hover {
+  color: var(--danger);
+  border-color: var(--danger);
+}
+
+#score.record {
+  color: var(--danger);
+}
+
 /* ---- Toggle de tema ---- */
 #theme-toggle {
   position: fixed;
