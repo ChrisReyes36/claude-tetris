@@ -48,6 +48,19 @@ const COLORS_NEON = [
   '#ff4081', // bomba
 ];
 
+const COLORS_NEON_LIGHT = [
+  null,
+  '#00a6b5', // I
+  '#c9a400', // O
+  '#a000c8', // T
+  '#1faa00', // S
+  '#d50032', // Z
+  '#1a52d6', // J
+  '#e06a00', // L
+  '#607d8b', // N
+  '#d81b60', // bomba
+];
+
 const COLORS_PASTEL = [
   null,
   '#a8e6ef', // I
@@ -303,7 +316,7 @@ const SKINS = {
     },
   },
   neon: {
-    palette: () => COLORS_NEON,
+    palette: () => (theme === 'light' ? COLORS_NEON_LIGHT : COLORS_NEON),
     glow: 14,
     block(context, x, y, s, color) {
       const a = context.globalAlpha;
@@ -524,7 +537,8 @@ function renderRecords() {
     }
     recordsList.append(li);
   }
-  recordsStats.textContent = `Mejor combo: ${records.bestCombo} · Líneas máx.: ${records.maxLines}`;
+  recordsStats.textContent = `Mejor combo: ${records.bestCombo}
+Líneas máx.: ${records.maxLines}`;
   recordsBox.classList.remove('hidden');
 }
 
@@ -548,7 +562,6 @@ function showOverlay(mode, title, text) {
   overlayTitle.textContent = title;
   overlayScore.textContent = text;
   nameForm.classList.add('hidden');
-  recordsBox.classList.add('hidden');
   restartBtn.textContent = mode === 'start' ? 'Jugar' : 'Reiniciar';
   overlay.classList.remove('hidden');
 }
@@ -580,10 +593,11 @@ function endGame() {
   }
 }
 
-function showPauseView(controls) {
-  pauseMain.classList.toggle('hidden', controls);
-  pauseControls.classList.toggle('hidden', !controls);
-  (controls ? controlsBackBtn : resumeBtn).focus();
+// view: 'main' | 'controls'
+function showPauseView(view) {
+  pauseMain.classList.toggle('hidden', view !== 'main');
+  pauseControls.classList.toggle('hidden', view !== 'controls');
+  ({ main: resumeBtn, controls: controlsBackBtn })[view].focus();
 }
 
 function togglePause() {
@@ -599,7 +613,7 @@ function togglePause() {
   } else {
     cancelAnimationFrame(animId);
     pauseMenu.classList.remove('hidden');
-    showPauseView(false);
+    showPauseView('main');
   }
 }
 
@@ -629,9 +643,6 @@ function refreshLook() {
   themeBtn.textContent = isLight ? '☾ Oscuro' : '☀ Claro';
   themeBtn.setAttribute('aria-pressed', String(isLight));
   themeBtn.setAttribute('aria-label', isLight ? 'Cambiar a modo oscuro' : 'Cambiar a modo claro');
-  // Las skins distintas de Retro traen su propio fondo: el tema claro/oscuro solo aplica a Retro
-  themeBtn.disabled = skin !== 'retro';
-  themeBtn.title = themeBtn.disabled ? 'Solo disponible en la skin Retro' : '';
   skinBtns.forEach(b => b.setAttribute('aria-pressed', String(b.dataset.skin === skin)));
   // El canvas no hereda del CSS: se leen los colores del tema/skin
   const css = getComputedStyle(document.documentElement);
@@ -683,9 +694,9 @@ function init() {
 document.addEventListener('keydown', e => {
   if (e.target === nameInput) return; // escribir el nombre no debe mover piezas
   if (e.code === 'KeyP' || e.code === 'Escape') {
-    // En la vista de controles, Esc vuelve al menú en vez de reanudar
-    if (paused && e.code === 'Escape' && !pauseControls.classList.contains('hidden')) {
-      showPauseView(false);
+    // En la subvista de controles, Esc vuelve al menú en vez de reanudar
+    if (paused && e.code === 'Escape' && pauseMain.classList.contains('hidden')) {
+      showPauseView('main');
     } else {
       togglePause();
     }
@@ -748,8 +759,8 @@ pauseRestartBtn.addEventListener('click', () => {
   document.activeElement?.blur();
   init();
 });
-controlsBtn.addEventListener('click', () => showPauseView(true));
-controlsBackBtn.addEventListener('click', () => showPauseView(false));
+controlsBtn.addEventListener('click', () => showPauseView('controls'));
+controlsBackBtn.addEventListener('click', () => showPauseView('main'));
 
 themeBtn.addEventListener('click', () => {
   applyTheme(theme === 'light' ? 'dark' : 'light');

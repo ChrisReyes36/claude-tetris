@@ -7,54 +7,22 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div class="toolbar">
-    <div class="skin-picker" role="group" aria-label="Skin">
-      <button class="skin-btn" type="button" data-skin="retro" aria-pressed="true">Retro</button>
-      <button class="skin-btn" type="button" data-skin="neon" aria-pressed="false">Neon</button>
-      <button class="skin-btn" type="button" data-skin="pastel" aria-pressed="false">Pastel</button>
-      <button class="skin-btn" type="button" data-skin="pixel" aria-pressed="false">Pixel</button>
-    </div>
-    <button id="theme-toggle" type="button" aria-pressed="false" aria-label="Cambiar a modo claro">☀ Claro</button>
-  </div>
-
   <div class="wrapper">
-    <h1 class="title">TETRIS</h1>
+    <header class="title-row">
+      <h1 class="title">TETRIS</h1>
+      <button id="theme-toggle" type="button" aria-pressed="false" aria-label="Cambiar a modo claro">☀ Claro</button>
+    </header>
 
-    <div class="stage">
     <div class="game-container">
-      <canvas id="board" width="300" height="600"></canvas>
-
-      <aside class="panel">
-        <div class="panel-section">
-          <span class="label">SCORE</span>
-          <span class="value" id="score">0</span>
-        </div>
-        <div class="panel-section">
-          <span class="label">LINES</span>
-          <span class="value" id="lines">0</span>
-        </div>
-        <div class="panel-section">
-          <span class="label">LEVEL</span>
-          <span class="value" id="level">1</span>
-        </div>
-
-        <div class="panel-section">
-          <span class="label">NEXT</span>
-          <canvas id="next-canvas" width="120" height="120"></canvas>
-        </div>
-
-        <div class="panel-section controls">
-          <span class="label">CONTROLS</span>
-          <ul>
-            <li><kbd>←</kbd><kbd>→</kbd> mover</li>
-            <li><kbd>↑</kbd> rotar</li>
-            <li><kbd>↓</kbd> bajar</li>
-            <li><kbd>Space</kbd> caída</li>
-            <li><kbd>P</kbd> / <kbd>Esc</kbd> pausa</li>
-          </ul>
-        </div>
+      <aside id="records" class="records-panel" aria-label="Mejores puntuaciones">
+        <span class="label">MEJORES PUNTUACIONES</span>
+        <ol id="records-list" class="records-list"></ol>
+        <p id="records-stats" class="records-stats"></p>
+        <button id="reset-records-btn" type="button">Resetear records</button>
       </aside>
-    </div>
+
+      <div class="board-wrap">
+      <canvas id="board" width="300" height="600"></canvas>
 
     <div id="overlay" class="overlay hidden">
       <div class="overlay-box">
@@ -68,13 +36,6 @@
             <button id="save-btn" type="submit">Guardar</button>
           </div>
         </form>
-
-        <div id="records" class="records hidden">
-          <span class="label">MEJORES PUNTUACIONES</span>
-          <ol id="records-list" class="records-list"></ol>
-          <p id="records-stats" class="records-stats"></p>
-          <button id="reset-records-btn" type="button">Resetear records</button>
-        </div>
 
         <button id="restart-btn">Reiniciar</button>
       </div>
@@ -106,7 +67,49 @@
           <button id="controls-back-btn" class="menu-btn" type="button">Volver</button>
         </div>
       </div>
+      </div>
     </div>
+
+      <aside class="panel">
+        <div class="panel-section">
+          <span class="label">SCORE</span>
+          <span class="value" id="score">0</span>
+        </div>
+        <div class="panel-section">
+          <span class="label">LINES</span>
+          <span class="value" id="lines">0</span>
+        </div>
+        <div class="panel-section">
+          <span class="label">LEVEL</span>
+          <span class="value" id="level">1</span>
+        </div>
+
+        <div class="panel-section">
+          <span class="label">NEXT</span>
+          <canvas id="next-canvas" width="120" height="120"></canvas>
+        </div>
+
+        <div class="panel-section controls">
+          <span class="label">CONTROLS</span>
+          <ul>
+            <li><kbd>←</kbd><kbd>→</kbd> mover</li>
+            <li><kbd>↑</kbd> rotar</li>
+            <li><kbd>↓</kbd> bajar</li>
+            <li><kbd>Space</kbd> caída</li>
+            <li><kbd>P</kbd> / <kbd>Esc</kbd> pausa</li>
+          </ul>
+        </div>
+
+        <div class="panel-section skins">
+          <span class="label">SKINS</span>
+          <div class="skin-list" role="group" aria-label="Skin">
+            <button class="skin-btn" type="button" data-skin="retro" aria-pressed="true"><i class="swatch swatch-retro"></i>Retro</button>
+            <button class="skin-btn" type="button" data-skin="neon" aria-pressed="false"><i class="swatch swatch-neon"></i>Neon</button>
+            <button class="skin-btn" type="button" data-skin="pastel" aria-pressed="false"><i class="swatch swatch-pastel"></i>Pastel</button>
+            <button class="skin-btn" type="button" data-skin="pixel" aria-pressed="false"><i class="swatch swatch-pixel"></i>Pixel</button>
+          </div>
+        </div>
+      </aside>
     </div>
   </div>
 
