@@ -214,6 +214,136 @@ kbd {
   background: var(--accent-hover);
 }
 
+.overlay[data-mode="start"] #overlay-title {
+  color: var(--accent);
+}
+
+.overlay-box .hidden {
+  display: none;
+}
+
+/* ---- Tabla de records ---- */
+.name-form {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  align-items: center;
+  font-size: 13px;
+  color: var(--accent);
+}
+
+.name-row {
+  display: flex;
+  gap: 6px;
+}
+
+#name-input {
+  width: 130px;
+  background: var(--canvas-bg);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 6px 10px;
+  font-size: 14px;
+  user-select: text;
+}
+
+#name-input:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+#save-btn {
+  background: var(--accent);
+  color: var(--on-accent);
+  border: none;
+  border-radius: 6px;
+  padding: 6px 14px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+#save-btn:hover {
+  background: var(--accent-hover);
+}
+
+.records {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  align-items: center;
+  width: 280px;
+}
+
+.records-list {
+  list-style: none;
+  width: 100%;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 14px;
+}
+
+.records-list li {
+  display: flex;
+  gap: 8px;
+  padding: 3px 8px;
+  border-radius: 4px;
+  color: var(--text);
+}
+
+.records-list .rank {
+  width: 20px;
+  color: var(--label);
+}
+
+.records-list .name {
+  flex: 1;
+  text-align: left;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.records-list .pts {
+  color: var(--accent);
+  font-weight: 700;
+}
+
+.records-list li.empty {
+  color: var(--muted);
+  justify-content: center;
+}
+
+.records-list li.highlight {
+  background: var(--accent);
+  color: var(--on-accent);
+}
+
+.records-list li.highlight .rank,
+.records-list li.highlight .pts {
+  color: var(--on-accent);
+}
+
+.records-stats {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+#reset-records-btn {
+  background: none;
+  color: var(--danger);
+  border: 1px solid var(--danger);
+  border-radius: 6px;
+  padding: 4px 12px;
+  font-size: 11px;
+  cursor: pointer;
+}
+
+#reset-records-btn:hover {
+  background: var(--danger);
+  color: var(--on-accent);
+}
+
 /* ---- Toggle de tema ---- */
 #theme-toggle {
   position: fixed;
