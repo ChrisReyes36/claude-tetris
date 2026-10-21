@@ -7,7 +7,15 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <button id="theme-toggle" type="button" aria-pressed="false" aria-label="Cambiar a modo claro">☀ Claro</button>
+  <div class="toolbar">
+    <div class="skin-picker" role="group" aria-label="Skin">
+      <button class="skin-btn" type="button" data-skin="retro" aria-pressed="true">Retro</button>
+      <button class="skin-btn" type="button" data-skin="neon" aria-pressed="false">Neon</button>
+      <button class="skin-btn" type="button" data-skin="pastel" aria-pressed="false">Pastel</button>
+      <button class="skin-btn" type="button" data-skin="pixel" aria-pressed="false">Pixel</button>
+    </div>
+    <button id="theme-toggle" type="button" aria-pressed="false" aria-label="Cambiar a modo claro">☀ Claro</button>
+  </div>
 
   <div class="wrapper">
     <h1 class="title">TETRIS</h1>
